@@ -1,9 +1,12 @@
 package jar.controller;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,27 +21,34 @@ public class StudentController {
     @Autowired
     StudentRepo db;
 
-    @PostMapping()
-    Map<Object, Object> m1(@RequestBody Student s) {
-        Map res = new HashMap<>();
+    @PutMapping("/update/{id}")
+    public Map<Object, Object> updateStudent(@PathVariable Long id, @RequestBody Student s) {
 
-        String name = s.getName();
-        String email = s.getEmail();
-        String ip = s.getIp();
+        Map<Object, Object> res = new HashMap<>();
 
-        Student obj = new Student();
+        Optional<Student> optionalStudent = db.findById(id);
 
-        obj.setName(name);
-        obj.setEmail(email);
-        obj.setIp(ip);
+        if (optionalStudent.isPresent()) {
 
-        db.save(obj);
+            Student obj = optionalStudent.get();
 
-        res.put("msg", "welcom post api endpoint");
-        res.put("status", 201);
-        res.put("student", obj.getName());
+            obj.setName(s.getName());
+            obj.setEmail(s.getEmail());
+            obj.setIp(s.getIp());
+
+            db.save(obj);
+
+            res.put("msg", "Student updated successfully");
+            res.put("status", 200);
+            res.put("student", obj);
+
+        } else {
+
+            res.put("msg", "Student not found");
+            res.put("status", 404);
+
+        }
 
         return res;
     }
-
 }
