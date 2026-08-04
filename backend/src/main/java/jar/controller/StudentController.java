@@ -3,7 +3,9 @@ package jar.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +42,16 @@ public class StudentController {
 
         return res;
     }
+    @PutMapping("/update/{id}")
+    public Student updateStudent(@PathVariable Long id,
+                                @RequestBody Update update) {
 
+        Student student = repository.findById(id).orElseThrow();
+
+        student.setName(update.getName());
+        student.setEmail(update.getEmail());
+        student.setIp(update.getIp());
+
+        return repository.save(student);
+}
 }
