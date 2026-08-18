@@ -15,7 +15,7 @@ public class Dservice {
         this.db=db;
     }
     
-    Map<Object, Object> ds(long id){
+   public Map<Object, Object> ds(long id){
          Map<Object, Object> res = new HashMap<>();
 
         if (db.existsById(id)) {
