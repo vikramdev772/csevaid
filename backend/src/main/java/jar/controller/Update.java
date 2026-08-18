@@ -1,32 +1,27 @@
 package jar.controller;
 
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jar.model.Student;
-import jar.repo.StudentRepo;
-
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-
+import jar.services.Uservice;
 
 @RestController
 public class Update {
 
     @Autowired
-    StudentRepo db;
+    Uservice obj;
 
     @PutMapping("/api/{id}")
-    public String putMethodName(@PathVariable long id, @RequestBody Student dto) {
-        Student d=db.findById(id).orElse(null);
+    public Map<Object, Object> updateStudent(
+            @PathVariable long id,
+            @RequestBody Student dto) {
 
-        d.setName(dto.getName());
-        d.setEmail(dto.getEmail());
-        d.setIp(dto.getIp());
-
-        db.save(d);
-        
-        return "Student updated successfully";
+        return obj.us(id, dto);
     }
 }
