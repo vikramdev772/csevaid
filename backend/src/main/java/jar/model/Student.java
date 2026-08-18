@@ -46,4 +46,5 @@ public class Student {
         return this.ip;
     }
 
+    public long getId() {return this.id;}
 }
