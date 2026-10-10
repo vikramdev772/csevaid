@@ -7,17 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jar.model.Student;
-import jar.repo.StudentRepo;
+import jar.services.Aservice;
 
 @RestController
 public class Allusers {
 
     @Autowired
-    StudentRepo db;
+    Aservice obj;
 
     @GetMapping("/api/all")
     List<Student> f() {
-        return db.findAll();
+        return obj.all();
     }
-
 }
